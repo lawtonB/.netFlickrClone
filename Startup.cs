@@ -46,7 +46,7 @@ namespace FlickrClone
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Category}/{action=Index}/{id?}");
+                    template: "{controller=Roles}/{action=Index}/{id?}");
             });
 
             app.Run(async (context) =>

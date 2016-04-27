@@ -67,5 +67,68 @@ namespace FlickrClone.Controllers
             return RedirectToAction("Index");
 
         }
+
+        public ActionResult ManageUserRoles()
+        {
+            var list = _db.Roles.OrderBy(x => x.Name).ToList().Select(xx => new SelectListItem { Value = xx.Name.ToString(), Text = xx.Name }).ToList();
+            ViewBag.Roles = list;
+            return View(); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RoleAddToUser(string UserName, string RoleName)
+        {
+            //Async method requires Task which means that await is required on result
+
+            ApplicationUser user = _db.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var result = await _userManager.AddToRoleAsync(user, RoleName);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GetRoles(string UserName)
+        {
+            if (!string.IsNullOrWhiteSpace(UserName))
+            {
+                ApplicationUser user = _db.Users
+                   .Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+                var something = await _userManager.GetRolesAsync(user);
+
+                var list = _db.Roles
+                    .OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+
+                ViewBag.Roles = list;
+
+            }
+            return RedirectToAction("ManageUserRoles");
+
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteRoleForUser(string UserName, string RoleName)
+        //{
+
+        //    ApplicationUser user = _db.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+        //    if (_userManager.IsInRoleAsync(user, RoleName).Result)
+        //    {
+        //        var result = _userManager.RemoveFromRoleAsync(user, RoleName).Result;
+        //        ViewBag.ResultMessage = "Role removed from this user successfully !";
+        //    }
+        //    else
+        //    {
+        //        ViewBag.ResultMessage = "This user doesn't belong to selected role.";
+        //    }
+        //    // prepopulat roles for the view dropdown
+        //    var list = _db.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+        //    ViewBag.Roles = list;
+
+        //    return RedirectToAction("ManageUserRoles");
+        //}
     }
 }
