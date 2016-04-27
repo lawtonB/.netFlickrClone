@@ -16,8 +16,15 @@ namespace FlickrClone.Models
             base.OnModelCreating(builder);
 
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
 
-        public DbSet<Category> Categories { get; set; }
+        {
+            options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=FlickrClone;integrated security = True");
+        }
+
+        public DbSet<Category>Categories { get; set; }
         public DbSet<Picture> Pictures { get; set; }
     }
+
+   
 }

@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IList<FlickrClone.Models.Category>
+
+
+<h2>Add New Category</h2>
+<hr />
+
+
+@using (@Html.BeginForm("AddCategory", "Category"))
+{
+    <input name="Category" value="" />
+    <button type="submit">Submit</button>
+}
+
+
+<p>@Html.ActionLink("Register", "Register")</p>
+<p>@Html.ActionLink("Log in", "Login")</p>
+
+
+@foreach (var category in Model)
+{
+        @Html.DisplayFor(x => category.CategoryName)
+
+        @using (@Html.BeginForm("Delete", "Category", new { id = category.CategoryId }))
+        {
+        <button type="submit">Delete</button>
+        }
+
+    }
+    
+  
