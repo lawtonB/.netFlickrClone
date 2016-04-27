@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>Welcome to your pictures</h1>
+
+
+<form method="post" asp-action="Index" asp-controller="Home" enctype="multipart/form-data">
+    <input type="file" name="files" multiple />
+    <input type="submit" value="Upload" />
+</form>
+
+<img src="~/uploads/cat.jpg" />
+<img src="~/uploads/dog.jpg" />
+
