@@ -8,9 +8,10 @@ using FlickrClone.Models;
 namespace FlickrClone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160427175753_PicturesChange")]
+    partial class PicturesChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -62,36 +63,6 @@ namespace FlickrClone.Migrations
                         .HasAnnotation("Relational:Name", "UserNameIndex");
 
                     b.HasAnnotation("Relational:TableName", "AspNetUsers");
-                });
-
-            modelBuilder.Entity("FlickrClone.Models.Category", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CategoryName");
-
-                    b.HasKey("CategoryId");
-
-                    b.HasAnnotation("Relational:TableName", "Categories");
-                });
-
-            modelBuilder.Entity("FlickrClone.Models.Picture", b =>
-                {
-                    b.Property<int>("PictureId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("CategoryCategoryId");
-
-                    b.Property<string>("CategoryId");
-
-                    b.Property<string>("PictureURL");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("PictureId");
-
-                    b.HasAnnotation("Relational:TableName", "Pictures");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
@@ -174,17 +145,6 @@ namespace FlickrClone.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("FlickrClone.Models.Picture", b =>
-                {
-                    b.HasOne("FlickrClone.Models.Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryCategoryId");
-
-                    b.HasOne("FlickrClone.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
