@@ -10,6 +10,7 @@ using FlickrClone.Models;
 using Microsoft.Data.Entity;
 using System.Diagnostics;
 using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.AspNet.Authorization;
 
 namespace FlickrClone.Controllers
 {
@@ -58,7 +59,7 @@ namespace FlickrClone.Controllers
                 return View();
             }
         }
-
+        [Authorize]
         public ActionResult Delete(string RoleName)
         {
             var thisRole = _db.Roles.Where(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
@@ -75,6 +76,7 @@ namespace FlickrClone.Controllers
             return View(); 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RoleAddToUser(string UserName, string RoleName)
@@ -87,16 +89,17 @@ namespace FlickrClone.Controllers
             return RedirectToAction("Index");
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetRoles(string UserName)
+        public ActionResult GetRoles(string UserName)
         {
             if (!string.IsNullOrWhiteSpace(UserName))
             {
                 ApplicationUser user = _db.Users
                    .Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 
-                var something = await _userManager.GetRolesAsync(user);
+                ViewBag.RolesForThisUser = _userManager.GetRolesAsync(user).Result;
 
                 var list = _db.Roles
                     .OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
@@ -104,7 +107,7 @@ namespace FlickrClone.Controllers
                 ViewBag.Roles = list;
 
             }
-            return RedirectToAction("ManageUserRoles");
+            return View("ManageUserRoles");
 
         }
 
