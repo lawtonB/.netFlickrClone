@@ -30,7 +30,7 @@ namespace FlickrClone.Controllers
 
         //public UserManager<ApplicationUser> userManager {get; set;}
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
             var CurrentUser = await _userManager.FindByIdAsync(User.GetUserId());
             var currentId = CurrentUser.Id;
@@ -86,7 +86,7 @@ namespace FlickrClone.Controllers
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
     }
 }

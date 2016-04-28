@@ -22,15 +22,18 @@
 
 @foreach (var category in Model)
 {
-    @Html.DisplayFor(x => category.CategoryName)
 
-         @Html.ActionLink("category", "CategoryDetails", new { id = category.CategoryId})
+    @*display-for takes commented out text and transfers to display templates list-category cshtml*@
+
+
+    @*@Html.DisplayFor(m=>category, "list-category")*@
+
+   @Html.ActionLink(category.CategoryName, "CategoryDetails", new { id = category.CategoryId });
 
     @using (@Html.BeginForm("Delete", "Category", new { id = category.CategoryId }))
-        {
+    {
         <button type="submit">Delete</button>
-        }
-
     }
+}
     
   

@@ -1,0 +1,8 @@
+﻿@*@model FlickrClone.Models.Category
+
+@Html.ActionLink(Model.CategoryName, "CategoryDetails", new { id = Model.CategoryId });
+
+@using (@Html.BeginForm("Delete", "Category", new { id = Model.CategoryId }))
+{
+    <button type="submit">Delete</button>
+}*@
