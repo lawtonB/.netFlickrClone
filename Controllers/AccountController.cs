@@ -6,6 +6,8 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Identity;
 using FlickrClone.Models;
 using FlickrClone.ViewModels;
+using System.Security.Claims;
+using Microsoft.Data.Entity;
 
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -28,9 +30,15 @@ namespace FlickrClone.Controllers
 
         //public UserManager<ApplicationUser> userManager {get; set;}
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var CurrentUser = await _userManager.FindByIdAsync(User.GetUserId());
+            var currentId = CurrentUser.Id;
+
+            //return View(_db.Users.Where(x => x.Id == currentId).ToList());
+            return View(_db.Pictures.Where(x => x.User.Id == currentId).ToList());
+
+
         }
 
         public IActionResult Register()

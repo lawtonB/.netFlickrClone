@@ -4,6 +4,8 @@
 }
 
 @using System.Security.Claims
+@model IList<FlickrClone.Models.Picture>
+
 
 <h2>Authentication with Identity</h2>
 <hr />
@@ -21,4 +23,10 @@ else
 {
     <p>@Html.ActionLink("Register", "Register")</p>
     <p>@Html.ActionLink("Log in", "Login")</p>
+}
+
+
+@foreach (var picture in Model)
+{
+    <img src="@Html.DisplayFor(x => picture.PictureURL)" height="200" width="200" />
 }

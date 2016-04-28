@@ -6,6 +6,8 @@
     <title>@ViewBag.Title</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
+@using System.Security.Claims
+
 <body>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -26,6 +28,11 @@
                     <li>@Html.ActionLink("Home", "Index", "Category")</li>
                     <li>@Html.ActionLink("Admin", "Index", "Roles")</li>
                     <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                    @if (User.IsSignedIn())
+                    {
+                        <li>@Html.ActionLink("Profile", "Index", "Account")</li>
+
+                    }
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
