@@ -12,18 +12,36 @@ using Microsoft.AspNet.Http;
 using System.IO;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNet.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace FlickrClone.Controllers
 {
     public class PictureController : Controller
     {
-       private ApplicationDbContext _db = new ApplicationDbContext();
+        //private ApplicationDbContext _db = new ApplicationDbContext();
+
+        private readonly ApplicationDbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+        //public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser>
+        //    signInManager, ApplicationDbContext db)
+        //{
+        //    _userManager = userManager;
+        //    _signInManager = signInManager;
+        //    _dbd = db;
+        //}
 
         private IHostingEnvironment _environment;
 
-        public PictureController(IHostingEnvironment environment)
+        public PictureController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser>
+           signInManager, ApplicationDbContext db, IHostingEnvironment environment)
         {
-            _environment = environment;
+                _environment = environment;
+                _userManager = userManager;
+                _signInManager = signInManager;
+                _db = db;
+            
         }
 
         public IActionResult Index()
@@ -45,12 +63,16 @@ namespace FlickrClone.Controllers
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     await file.SaveAsAsync(Path.Combine(uploads, fileName));
                     //instantiate new picture object called "newPic"
+
+
                     Picture newPic = new Picture();
                     //assign newPic property pictureUrl to uploads and filename var containg url
                     newPic.PictureURL = "/uploads/" + fileName;
                     //hard code sample entry
-                    //int newId = Int32.Parse(id);
+                    //use request form to get newpic by categoryId
                     newPic.CategoryId = Int32.Parse(Request.Form["CategoryId"]);
+                    var user = await _userManager.FindByIdAsync(User.GetUserId());
+                    newPic.User = user;
                     _db.Pictures.Add(newPic);
                     _db.SaveChanges();
 
