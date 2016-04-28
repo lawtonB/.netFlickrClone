@@ -17,15 +17,16 @@
 }
 
 
-<p>@Html.ActionLink("Register", "Register", "Account")</p>
-<p>@Html.ActionLink("Log in", "Login", "Account")</p>
+
 
 
 @foreach (var category in Model)
 {
-        @Html.DisplayFor(x => category.CategoryName)
+    @Html.DisplayFor(x => category.CategoryName)
 
-        @using (@Html.BeginForm("Delete", "Category", new { id = category.CategoryId }))
+         @Html.ActionLink("category", "CategoryDetails", new { id = category.CategoryId})
+
+    @using (@Html.BeginForm("Delete", "Category", new { id = category.CategoryId }))
         {
         <button type="submit">Delete</button>
         }

@@ -11,6 +11,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using System.IO;
 using Microsoft.Net.Http.Headers;
+using Microsoft.AspNet.Mvc.Rendering;
 
 namespace FlickrClone.Controllers
 {
@@ -27,6 +28,8 @@ namespace FlickrClone.Controllers
 
         public IActionResult Index()
         {
+
+            ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "CategoryName");
             return View();
         }
 
@@ -41,8 +44,18 @@ namespace FlickrClone.Controllers
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     await file.SaveAsAsync(Path.Combine(uploads, fileName));
+                    //instantiate new picture object called "newPic"
+                    Picture newPic = new Picture();
+                    //assign newPic property pictureUrl to uploads and filename var containg url
+                    newPic.PictureURL = "/uploads/" + fileName;
+                    //hard code sample entry
+                    //int newId = Int32.Parse(id);
+                    newPic.CategoryId = Int32.Parse(Request.Form["CategoryId"]);
+                    _db.Pictures.Add(newPic);
+                    _db.SaveChanges();
+
                 }
-            }
+            }     
             return RedirectToAction("index");
         }
     }

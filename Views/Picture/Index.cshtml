@@ -9,9 +9,11 @@
 
 <form method="post" asp-action="Index" asp-controller="Home" enctype="multipart/form-data">
     <input type="file" name="files" multiple />
-    <input type="submit" value="Upload" />
+     @Html.DropDownList("CategoryId")
+  
+     <input type="submit" value="Upload" />
 </form>
 
-<img src="~/uploads/cat.jpg" />
-<img src="~/uploads/dog.jpg" />
+@*<img src="~/uploads/cat.jpg" />
+<img src="~/uploads/dog.jpg" />*@
 
